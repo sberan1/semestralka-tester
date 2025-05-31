@@ -1,10 +1,28 @@
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { useQuizStore } from "@/store/store";
+import { useEffect } from "react";
+import { Label } from "@/components/ui/label";
+import QuizzCard from "@/components/QuizzCard";
 
 export default function Home() {
+  const { quizzes, fetchQuizzes, activeQuizId } = useQuizStore();
+
+  useEffect(() => {
+    fetchQuizzes();
+  }, []);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <Button>Something</Button>
-    </div>
+    <>
+      <Label>{activeQuizId}</Label>
+      {quizzes.map((q) => (
+        <QuizzCard
+          key={q.id}
+          id={q.id}
+          title={q.title}
+          description={q.description}
+        />
+      ))}
+    </>
   );
 }

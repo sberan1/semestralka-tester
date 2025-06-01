@@ -18,7 +18,7 @@ model Quiz {
   createdAt   DateTime   @default(now())
 }
 
-model QuestionCard {
+model Question {
   id      Int          @id @default(autoincrement())
   text    String
   type    QuestionType
@@ -27,7 +27,7 @@ model QuestionCard {
   options Option[]
 }
 
-model OptionCard {
+model Option {
   id         Int      @id @default(autoincrement())
   text       String
   correct    Boolean

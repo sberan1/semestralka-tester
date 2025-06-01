@@ -22,6 +22,9 @@ export const QuestionCard: React.FC<QuestionProps> = ({
     const updatedOptions = question.options.map((option) =>
       option.id === optionId ? { ...option, correct: newCorrect } : option
     );
+    if (updatedOptions.map((option) => option.correct).filter(Boolean).length > 1) {
+      question.type = "multi"; // If more than one option is correct, set type to multi
+    }
     const updatedQuestion = { ...question, options: updatedOptions };
     onUpdateQuestion(updatedQuestion);
   };

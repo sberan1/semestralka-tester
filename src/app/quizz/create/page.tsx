@@ -1,16 +1,14 @@
-// File: src/app/quizz/create/page.tsx
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { parseQuizFile } from "@/lib/parser";
-import { ParsedQuiz } from "@/lib/types";
+import type { ParsedQuiz } from "@/lib/types";
 import { QuestionCard } from "@/components/QuestionCard";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { router } from "next/client";
 import { useQuizStore } from "@/store/store";
 import { redirect } from "next/navigation";
+import CreateQuizForm from "@/components/CreateQuizForm";
+
 
 export default function CreateQuizPage() {
   const [fileContent, setFileContent] = useState("");
@@ -23,12 +21,11 @@ export default function CreateQuizPage() {
 
   const { setActiveQuiz } = useQuizStore();
 
-  const handleParse = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // Parse the quiz file content and update the quiz state.
+  const handleParse = () => {
     try {
       const parsed = parseQuizFile(fileContent);
       setQuiz(parsed);
-      console.log(parsed);
       setError("");
     } catch (err: any) {
       setError("Error parsing file content");
@@ -36,7 +33,7 @@ export default function CreateQuizPage() {
     }
   };
 
-  // Updates a single question from the quiz based on its id (index or the synthetic id).
+  // Update a specific question from the quiz based on its id.
   const updateQuestion = (updatedQuestion: typeof quiz[number]) => {
     if (!quiz) return;
     const updatedQuiz = quiz.map((q) =>
@@ -45,11 +42,10 @@ export default function CreateQuizPage() {
     setQuiz(updatedQuiz);
   };
 
-  // Submit the edited quiz to the DB.
+  // Save the quiz to the database.
   const handleSave = async () => {
     if (!quiz) return;
     setSaving(true);
-
     try {
       const payload = {
         title: name,
@@ -72,53 +68,25 @@ export default function CreateQuizPage() {
           await setActiveQuiz(data.id);
           await redirect("/quizz/" + data.id);
         }, 500);
-        // You can redirect or clear the editor here.
       }
     } catch (error: any) {
       setSaveError("Error saving quiz");
     }
-
     setSaving(false);
   };
 
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-4">Create Quiz</h1>
-      <form onSubmit={handleParse}>
-        <textarea
-          className="border p-2 w-full h-40 mb-4"
-          placeholder="Enter quiz file content here..."
-          value={fileContent}
-          onChange={(e) => setFileContent(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="bg-primary text-white px-4 py-2 rounded"
-        >
-          Parse Quiz
-        </button>
-      </form>
-
-      <div className="grid w-full max-w-sm items-center gap-3 m-4">
-        <Label htmlFor="name">Name of the quiz</Label>
-        <Input
-          id="Name"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div>
-
-      <div className="grid w-full max-w-sm items-center gap-3 m-4">
-        <Label htmlFor="description">Description of the quiz</Label>
-        <Input
-          id="Description"
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </div>
-
+      <CreateQuizForm
+        fileContent={fileContent}
+        setFileContent={setFileContent}
+        name={name}
+        setName={setName}
+        description={description}
+        setDescription={setDescription}
+        handleParse={handleParse}
+      />
       <button
         onClick={handleSave}
         className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
@@ -126,7 +94,6 @@ export default function CreateQuizPage() {
       >
         {saving ? "Saving..." : "Save Quiz"}
       </button>
-
       {error && <p className="mt-4 text-destructive">{error}</p>}
       {quiz && (
         <div className="mt-4">
@@ -138,7 +105,6 @@ export default function CreateQuizPage() {
               editMode={true}
             />
           ))}
-
           {saveError && <p className="mt-4 text-destructive">{saveError}</p>}
         </div>
       )}

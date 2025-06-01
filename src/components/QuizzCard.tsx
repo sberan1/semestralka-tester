@@ -2,6 +2,7 @@ import { Card, CardFooter, CardTitle, CardDescription, CardHeader } from "@/comp
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useQuizStore } from "@/store/store";
+import { redirect } from "next/navigation";
 
 type QuizzCardProps = {
   id: number;
@@ -20,7 +21,12 @@ const QuizzCard: React.FC<QuizzCardProps> = ({ id, title, description, className
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter>
-        <Button onClick={() => setActiveQuiz(id)}>Start Quizz</Button>
+        <Button onClick={() =>{
+          setActiveQuiz(id)
+          redirect("/quizz/" + id)
+        }}>
+          Start Quizz
+        </Button>
       </CardFooter>
     </Card>
   );

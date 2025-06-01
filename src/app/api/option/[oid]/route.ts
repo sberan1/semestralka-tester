@@ -12,7 +12,7 @@ export async function GET(
   });
 
   if (!option) {
-    return NextResponse.json({ error: "Option not found" }, { status: 404 });
+    return NextResponse.json({ error: "OptionCard not found" }, { status: 404 });
   }
 
   return NextResponse.json(option);
@@ -42,5 +42,5 @@ export async function DELETE(
     where: { id: Number(params.oid) },
   });
 
-  return NextResponse.json({ message: "Option deleted successfully" });
+  return NextResponse.json({ message: "OptionCard deleted successfully" });
 }

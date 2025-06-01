@@ -3,12 +3,13 @@
 import { Plus } from "lucide-react"
 
 import { Card, CardContent } from "@/components/ui/card"
+import { redirect } from "next/navigation";
 
 export default function PlusCard({className}: {className?: string}) {
 
   const handleClick = () => {
-    // Add your click logic here
     console.log("Circle clicked!")
+    redirect("/quizz/create")
   }
 
   return (

@@ -18,15 +18,15 @@ export default function Home() {
       <Label>{activeQuizId}</Label>
       <div className={"flex flex-col items-center justify-start min-h-screen p-4 h-screen"}>
       <h1 className={"mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"}>Test Browser for 4IT427</h1>
-        <br/>
-      <div className={"flex flex-row flex-wrap justify-space-between"}>
+
+      <div className={"flex flex-row flex-wrap justify-center items-center"}>
         {quizzes.map((q) => (
         <QuizzCard
           key={q.id}
           id={q.id}
           title={q.title}
           description={q.description}
-          className={"m-5 min-w-sm min-h-40 flex content-between justify-between"}
+          className={"m-5 min-w-sm min-h-[200px] flex content-between justify-between"}
         />
       ))}
        <PlusCard className={"m-5 min-w-sm min-h-40"} />

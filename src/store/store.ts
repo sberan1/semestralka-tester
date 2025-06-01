@@ -1,13 +1,15 @@
-// store/useQuizStore.ts
+// File: src/store/store.ts
+
 import { create } from "zustand";
 import { Option, Question, Quiz } from "@prisma/client";
 
 interface QuizStore {
   quizzes: Quiz[];
   activeQuizId: number | null;
+  activeQuiz: Quiz | null;
   loading: boolean;
   fetchQuizzes: () => Promise<void>;
-  setActiveQuiz: (id: number) => void;
+  setActiveQuiz: (id: number) => Promise<void>;
   updateQuestion: (
     quizId: number,
     questionId: number,
@@ -24,16 +26,27 @@ interface QuizStore {
 export const useQuizStore = create<QuizStore>((set, get) => ({
   quizzes: [],
   activeQuizId: null,
+  activeQuiz: null,
   loading: false,
 
   fetchQuizzes: async () => {
     set({ loading: true });
     const res = await fetch("/api/quizzes");
     const data = await res.json();
-    set({ quizzes: data, loading: false });
+    set({
+      quizzes: data,
+      loading: false,
+      activeQuiz: get().activeQuizId
+        ? data.find((q: Quiz) => q.id === get().activeQuizId) || null
+        : null,
+    });
   },
 
-  setActiveQuiz: (id) => set({ activeQuizId: id }),
+  setActiveQuiz: async (id) => {
+    const res = await fetch(`/api/quizzes/${id}`);
+    const selectedQuiz = await res.json();
+    set({ activeQuizId: id, activeQuiz: selectedQuiz });
+  },
 
   updateQuestion: async (quizId, questionId, updated) => {
     await fetch(`/api/quizzes/${quizId}/questions/${questionId}`, {
@@ -41,20 +54,15 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updated),
     });
-
-    await get().fetchQuizzes(); // reload
+    await get().fetchQuizzes();
   },
 
   updateOption: async (quizId, questionId, optionId, updated) => {
-    await fetch(
-      `/api/quizzes/${quizId}/questions/${questionId}/options/${optionId}`,
-      {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updated),
-      },
-    );
-
+    await fetch(`/api/quizzes/${quizId}/questions/${questionId}/options/${optionId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updated),
+    });
     await get().fetchQuizzes();
   },
 }));

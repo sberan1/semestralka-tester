@@ -7,6 +7,7 @@ type OptionProps = {
   submitted?: boolean;
   className?: string;
   onToggle?: () => void;
+  editMode?: boolean;
 };
 
 export const OptionCard: React.FC<OptionProps> = ({
@@ -14,11 +15,12 @@ export const OptionCard: React.FC<OptionProps> = ({
                                                     className = "",
                                                     submitted = false,
                                                     onToggle,
+  editMode = false,
                                                   }: OptionProps) => {
   const baseClasses = "p-4 m-2 rounded-lg shadow-md bg-white";
   let conditionalClasses = "";
 
-  if (!submitted) {
+  if (submitted || editMode) {
     conditionalClasses = option.correct
       ? "bg-green-500 ring-green-700"
       : "bg-red-500 ring-red-800";

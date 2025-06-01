@@ -23,3 +23,22 @@ export async function GET(
 
   return NextResponse.json(quiz);
 }
+
+export async function DELETE (
+  request: Request,
+  { params }: { params: { id: string } }
+){
+  const quizId = Number(params.id);
+
+  try {
+    await prisma.quiz.delete({
+      where: { id: quizId },
+    });
+    return NextResponse.json({ message: "Quiz deleted successfully" });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error deleting quiz\n" + error.message },
+      { status: 500 }
+    );
+  }
+}

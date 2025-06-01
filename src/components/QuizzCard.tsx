@@ -1,8 +1,10 @@
+// File: src/components/QuizzCard.tsx
 import { Card, CardFooter, CardTitle, CardDescription, CardHeader } from "@/components/ui/card";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useQuizStore } from "@/store/store";
 import { redirect } from "next/navigation";
+import { Edit, Trash } from "lucide-react";
 
 type QuizzCardProps = {
   id: number;
@@ -12,7 +14,24 @@ type QuizzCardProps = {
 };
 
 const QuizzCard: React.FC<QuizzCardProps> = ({ id, title, description, className }) => {
-  const { setActiveQuiz } = useQuizStore();
+  const { setActiveQuiz, deleteQuiz } = useQuizStore();
+
+  const handleStartQuiz = () => {
+    setActiveQuiz(id);
+    redirect("/quizz/" + id);
+  };
+
+  const handleEdit = () => {
+    redirect("/quizz/edit/" + id);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deleteQuiz(id);
+    } catch (error) {
+      console.error("Error deleting quiz:", error);
+    }
+  };
 
   return (
     <Card className={className}>
@@ -20,13 +39,16 @@ const QuizzCard: React.FC<QuizzCardProps> = ({ id, title, description, className
         <CardTitle className={"text-2xl font-bold"}>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardFooter>
-        <Button onClick={() =>{
-          setActiveQuiz(id)
-          redirect("/quizz/" + id)
-        }}>
-          Start Quizz
-        </Button>
+      <CardFooter className="flex justify-between">
+        <Button onClick={handleStartQuiz}>Start Quizz</Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handleEdit} title="Edit Quiz">
+            <Edit className="w-4 h-4" />
+          </Button>
+          <Button variant="destructive" onClick={handleDelete} title="Delete Quiz">
+            <Trash className="w-4 h-4" />
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

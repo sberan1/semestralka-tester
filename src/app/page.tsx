@@ -26,10 +26,10 @@ export default function Home() {
           id={q.id}
           title={q.title}
           description={q.description}
-          className={"m-5 min-w-sm min-h-[200px] flex content-between justify-between"}
+          className={"m-5 min-w-sm flex content-between justify-between"}
         />
       ))}
-       <PlusCard className={"m-5 min-w-sm min-h-40"} />
+       <PlusCard className={"m-5 min-w-sm"} />
       </div>
       </div>
     </>

@@ -91,7 +91,10 @@ export default function CreateQuizPage() {
           value={fileContent}
           onChange={(e) => setFileContent(e.target.value)}
         />
-        <button type="submit" className="bg-primary text-white px-4 py-2 rounded">
+        <button
+          type="submit"
+          className="bg-primary text-white px-4 py-2 rounded"
+        >
           Parse Quiz
         </button>
       </form>
@@ -132,6 +135,7 @@ export default function CreateQuizPage() {
               key={question.id}
               question={question}
               onUpdateQuestion={updateQuestion}
+              editMode={true}
             />
           ))}
 

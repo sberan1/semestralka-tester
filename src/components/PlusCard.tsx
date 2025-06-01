@@ -14,7 +14,7 @@ export default function PlusCard({className}: {className?: string}) {
 
   return (
     <Card className={className}>
-      <CardContent className=" flex items-center justify-center h-full min-h-[200px]">
+      <CardContent className=" flex items-center justify-center">
         <button
           onClick={handleClick}
           className={`

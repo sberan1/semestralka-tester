@@ -8,12 +8,14 @@ type QuestionProps = {
   question: ParsedQuestion;
   onUpdateQuestion: (updatedQuestion: ParsedQuestion) => void;
   className?: string;
+  editMode?: boolean;
 };
 
 export const QuestionCard: React.FC<QuestionProps> = ({
                                                         question,
                                                         onUpdateQuestion,
                                                         className = "",
+  editMode = false,
                                                       }: QuestionProps) => {
   // Handles toggle for an option by updating its correctness state locally.
   const handleToggleOption = (optionId: number, newCorrect: boolean) => {
@@ -33,7 +35,12 @@ export const QuestionCard: React.FC<QuestionProps> = ({
             key={option.id}
             option={option}
             submitted={false}
-            onToggle={() => handleToggleOption(option.id!, !option.correct)}
+            editMode={editMode}
+            onToggle={() => {
+              if (!editMode) return; // Only allow toggling in edit mode
+              handleToggleOption(option.id!, !option.correct)
+            }
+          }
           />
         ))}
       </ul>

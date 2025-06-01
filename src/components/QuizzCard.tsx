@@ -6,16 +6,17 @@ import { useQuizStore } from "@/store/store";
 type QuizzCardProps = {
   id: number;
   title: string;
-  description: string;
+  description: string | null;
+  className?: string;
 };
 
-const QuizzCard: React.FC<QuizzCardProps> = ({ id, title, description }) => {
+const QuizzCard: React.FC<QuizzCardProps> = ({ id, title, description, className }) => {
   const { setActiveQuiz } = useQuizStore();
 
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle className={"text-2xl font-bold"}>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter>

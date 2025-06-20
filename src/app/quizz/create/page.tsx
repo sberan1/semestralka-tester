@@ -21,7 +21,6 @@ export default function CreateQuizPage() {
 
   const { setActiveQuiz } = useQuizStore();
 
-  // Parse the quiz file content and update the quiz state.
   const handleParse = () => {
     try {
       const parsed = parseQuizFile(fileContent);
@@ -33,7 +32,6 @@ export default function CreateQuizPage() {
     }
   };
 
-  // Update a specific question from the quiz based on its id.
   const updateQuestion = (updatedQuestion: typeof quiz[number]) => {
     if (!quiz) return;
     const updatedQuiz = quiz.map((q) =>
@@ -42,7 +40,6 @@ export default function CreateQuizPage() {
     setQuiz(updatedQuiz);
   };
 
-  // Save the quiz to the database.
   const handleSave = async () => {
     if (!quiz) return;
     setSaving(true);
@@ -66,7 +63,7 @@ export default function CreateQuizPage() {
         setTimeout(async () => {
           const data = await res.json();
           await setActiveQuiz(data.id);
-          await redirect("/quizz/" + data.id);
+          redirect("/quizz/" + data.id);
         }, 500);
       }
     } catch (error: any) {

@@ -5,7 +5,6 @@ import { parseQuizFile } from "@/lib/parser";
 import type { ParsedQuiz } from "@/lib/types";
 import { QuestionCard } from "@/components/QuestionCard";
 import { toast } from "sonner";
-import { useQuizStore } from "@/store/store";
 import { redirect } from "next/navigation";
 import CreateQuizForm from "@/components/CreateQuizForm";
 
@@ -18,8 +17,6 @@ export default function CreateQuizPage() {
   const [saving, setSaving] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-
-  const { setActiveQuiz } = useQuizStore();
 
   const handleParse = () => {
     try {
@@ -40,7 +37,6 @@ export default function CreateQuizPage() {
     setQuiz(updatedQuiz);
   };
 
-  // Add a function to delete a question
   const deleteQuestion = (id: number | undefined) => {
     if (!quiz) return;
     setQuiz(quiz.filter((q) => q.id !== id));
@@ -67,9 +63,7 @@ export default function CreateQuizPage() {
         setSaveError("");
         toast(`Quiz - ${name} succesfully saved, redirecting...`);
         setTimeout(async () => {
-          const data = await res.json();
-          await setActiveQuiz(data.id);
-          redirect("/quizz/" + data.id);
+          redirect("/");
         }, 500);
       }
     } catch (error: any) {

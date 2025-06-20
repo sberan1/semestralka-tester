@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { QuestionCard } from "@/components/QuestionCard";
 import { toast } from "sonner";
-import { useQuizStore } from "@/store/store";
 import CreateQuizForm from "@/components/CreateQuizForm";
 import type { ParsedQuiz, ParsedQuestion } from "@/lib/types";
 

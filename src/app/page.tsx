@@ -2,12 +2,11 @@
 
 import { useQuizStore } from "@/store/store";
 import { useEffect } from "react";
-import { Label } from "@/components/ui/label";
 import QuizzCard from "@/components/QuizzCard";
 import PlusCard from "@/components/PlusCard";
 
 export default function Home() {
-  const { quizzes, fetchQuizzes, activeQuizId } = useQuizStore();
+  const { quizzes, fetchQuizzes } = useQuizStore();
 
   useEffect(() => {
     fetchQuizzes();

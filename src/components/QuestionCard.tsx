@@ -12,6 +12,7 @@ type QuestionProps = {
   quizMode?: boolean;
   onQuizSubmit?: (result: "correct" | "incorrect") => void;
   submittedResult?: "correct" | "incorrect" | null;
+  onDeleteQuestion?: (id: number | undefined) => void;
 };
 
 export const QuestionCard: React.FC<QuestionProps> = ({
@@ -22,6 +23,7 @@ export const QuestionCard: React.FC<QuestionProps> = ({
   quizMode = false,
   onQuizSubmit,
   submittedResult = null,
+  onDeleteQuestion,
 }: QuestionProps) => {
   // Local state for quiz mode (user's selected answers)
   const [selected, setSelected] = React.useState<number[]>([]);
@@ -76,7 +78,16 @@ export const QuestionCard: React.FC<QuestionProps> = ({
   };
 
   return (
-    <Card className={`p-4 m-2 rounded-lg shadow-md bg-white ${className}`}>
+    <Card className={`p-4 m-2 rounded-lg shadow-md bg-white ${className} relative`}>
+      {editMode && onDeleteQuestion && (
+        <button
+          className="absolute top-2 right-2 bg-red-500 text-white rounded px-2 py-1 text-xs hover:bg-red-700 z-10"
+          onClick={() => onDeleteQuestion(question.id)}
+          title="Delete question"
+        >
+          Delete
+        </button>
+      )}
       <h3 className="text-lg font-semibold mb-2">{question.text}</h3>
       <ul className="list-disc pl-5">
         {question.options.map((option) => (

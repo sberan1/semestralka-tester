@@ -22,7 +22,7 @@ const QuizzCard: React.FC<QuizzCardProps> = ({ id, title, description, className
   };
 
   const handleEdit = () => {
-    redirect("/quizz/edit/" + id);
+    redirect("/quizz/" + id + "/edit");
   };
 
   const handleDelete = async () => {

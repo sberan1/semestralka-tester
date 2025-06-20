@@ -15,7 +15,6 @@ export default function Home() {
 
   return (
     <>
-      <Label>{activeQuizId}</Label>
       <div className={"flex flex-col items-center justify-start min-h-screen p-4 h-screen"}>
       <h1 className={"mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"}>Test Browser for 4IT427</h1>
 
